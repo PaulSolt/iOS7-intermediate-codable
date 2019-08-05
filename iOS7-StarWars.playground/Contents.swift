@@ -8,8 +8,8 @@ struct Person: Codable {
     let hairColor: String // hair_color vs. hairColor
 
     let films: [URL]
-//    let vehicles: [URL]
-//    let starships: [URL]
+    let vehicles: [URL]
+    let starships: [URL]
     
     enum PersonKeys: String, CodingKey {
         case name
@@ -42,6 +42,15 @@ struct Person: Codable {
             }
         }
         films = filmURLs
+        
+        // 2nd approach: map
+        
+        let vehicleStrings = try container.decode([String].self, forKey: .vehicles)
+        vehicles = vehicleStrings.compactMap { URL(string: $0) }
+        
+        // 3rd approach: [URL].self
+        starships = try container.decode([URL].self, forKey: .starships)
+        
     }
     
 }
